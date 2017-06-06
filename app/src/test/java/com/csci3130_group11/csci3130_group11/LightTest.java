@@ -10,12 +10,14 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class LightTest {
+
+    Light l = new Light();
     @Test
     public void checkLightRange() throws Exception {
         int lightPerfect=50;
         int lightLow=0;
         int lightHigh=100;
-        assertTrue(Light.checkMeasurement(lightPerfect)&&!Light.checkMeasurement(lightHigh)&&!Light.checkMeasurement(lightLow));
+        assertTrue(l.checkMeasurement(lightPerfect)&&!l.checkMeasurement(lightHigh)&&!l.checkMeasurement(lightLow));
     }
     @Test
     public void checkLightInputtedRange() throws Exception {
@@ -27,11 +29,11 @@ public class LightTest {
         int outsideUp=110;
         int outsideLow=-10;
 
-        assertTrue(Light.checkUserInputtedRange(limitLow,limitUp)&&
-                        Light.checkUserInputtedRange(betweenLow,betweenUp)&&
-                        !Light.checkUserInputtedRange(outsideLow,outsideUp)&&
-                        !Light.checkUserInputtedRange(outsideLow,betweenUp)&&
-                        !Light.checkUserInputtedRange(betweenLow,outsideUp));
+        assertTrue(l.checkUserInputtedRange(limitLow,limitUp)&&
+                        l.checkUserInputtedRange(betweenLow,betweenUp)&&
+                        !l.checkUserInputtedRange(outsideLow,outsideUp)&&
+                        !l.checkUserInputtedRange(outsideLow,betweenUp)&&
+                        !l.checkUserInputtedRange(betweenLow,outsideUp));
 
     }
 
