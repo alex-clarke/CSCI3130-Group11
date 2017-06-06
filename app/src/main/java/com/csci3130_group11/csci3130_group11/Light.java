@@ -9,6 +9,8 @@ public class Light extends Measurement {
         super();
         deviceRangeLower=0;
         deviceRangeUpper=100;
+        userInputedRangeLower=deviceRangeLower;
+        userInputedRangeUpper=deviceRangeUpper;
     }
     public Light(double curr){
         super();

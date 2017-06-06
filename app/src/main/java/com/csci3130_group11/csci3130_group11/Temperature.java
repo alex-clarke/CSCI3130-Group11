@@ -9,6 +9,8 @@ public class Temperature extends Measurement {
         super();
         deviceRangeLower=-40;
         deviceRangeUpper=125;
+        userInputedRangeLower=deviceRangeLower;
+        userInputedRangeUpper=deviceRangeUpper;
     }
     public Temperature(double curr){
         super();

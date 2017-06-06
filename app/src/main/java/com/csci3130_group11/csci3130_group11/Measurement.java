@@ -39,7 +39,7 @@ public class Measurement {
     }
 
     //AClarke
-    protected boolean checkUserInputedRange(double lower, double upper){
+    protected boolean checkUserInputtedRange(double lower, double upper){
         return (lower<upper&&lower>=deviceRangeLower&&upper<=deviceRangeUpper);
     }
 

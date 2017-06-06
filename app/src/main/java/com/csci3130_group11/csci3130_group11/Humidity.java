@@ -9,6 +9,8 @@ public class Humidity extends Measurement {
         super();
         deviceRangeLower=0;
         deviceRangeUpper=100;
+        userInputedRangeLower=deviceRangeLower;
+        userInputedRangeUpper=deviceRangeUpper;
     }
     public Humidity(double curr){
         super();
