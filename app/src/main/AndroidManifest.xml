@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayCurrentData"></activity>
+        <activity android:name=".DisplayHistoricalData" />
+        <activity android:name=".DisplayCurrentData" />
+        <activity android:name=".SetRanges" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>

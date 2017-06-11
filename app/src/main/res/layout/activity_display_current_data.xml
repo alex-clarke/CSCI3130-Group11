@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.csci3130_group11.csci3130_group11.DisplayCurrentData">
+
+    <TextView
+        android:id="@+id/TEMPERATURE_LABEL"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="100dp"
+        android:text="TEMPERATURE:"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/HUMIDITY_LABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="HUMIDITY:"
+        app:layout_constraintTop_toBottomOf="@+id/TEMPERATURE_LABEL"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/change_range_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Ranges"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/CURRENT_LABEL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="CURRENT"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/MIN_LABEL"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MIN_LABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="MIN         "
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="140dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/MAX_LABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="MAX"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/CURRENT_LABEL"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/LIGHT_LABEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        android:text="LIGHT:"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HUMIDITY_LABEL" />
+
+    <TextView
+        android:id="@+id/MIN_T_RANGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="140dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/CURRENT_T"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toRightOf="@+id/MIN_T_RANGE"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MAX_T_RANGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toRightOf="@+id/CURRENT_T"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MIN_H_RANGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/MIN_T_RANGE"
+        android:layout_marginLeft="140dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/CURRENT_H"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/CURRENT_T"
+        app:layout_constraintLeft_toRightOf="@+id/MIN_H_RANGE"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MAX_H_RANGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/MAX_T_RANGE"
+        app:layout_constraintLeft_toRightOf="@+id/CURRENT_H"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MIN_L_RANGE"
+        android:layout_width="61dp"
+        android:layout_height="16dp"
+        android:text="TextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/MIN_H_RANGE"
+        android:layout_marginLeft="140dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/CURRENT_L"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/CURRENT_H"
+        app:layout_constraintLeft_toRightOf="@+id/MIN_L_RANGE"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/MAX_L_RANGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        app:layout_constraintLeft_toRightOf="@+id/CURRENT_L"
+        app:layout_constraintTop_toBottomOf="@+id/MAX_H_RANGE" />
+</android.support.constraint.ConstraintLayout>
