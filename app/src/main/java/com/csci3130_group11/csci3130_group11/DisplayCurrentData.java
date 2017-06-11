@@ -2,15 +2,13 @@ package com.csci3130_group11.csci3130_group11;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.graphics.Color;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class DisplayCurrentData extends AppCompatActivity implements View.OnClickListener{
 
@@ -53,7 +51,12 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         Objects representing the data are assigned here.
          */
        // Util.assignObjects(t, h, l);
-
+        /*
+        Objects 
+         */
+        l=Util.getLight();
+        h=Util.getHumidity();
+        t=Util.getTemperature();
         /*
         TextViews get assigned
          */

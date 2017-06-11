@@ -17,20 +17,6 @@ public class Measurement {
 
     }
 
-    protected double getRangeLower(){
-        return userInputedRangeLower;
-    }
-    protected double getRangeUpper(){
-        return userInputedRangeUpper;
-    }
-
-    protected void setRangeLower(double lowerVal){
-        userInputedRangeLower = lowerVal;
-    }
-    protected void setRangeUpper(double upperVal){
-        userInputedRangeUpper = upperVal;
-    }
-
     protected boolean checkMeasurement(double val){
         if(val>userInputedRangeLower && val<userInputedRangeUpper)
             return true;
@@ -39,47 +25,95 @@ public class Measurement {
     }
 
     //AClarke
+
+    /**
+     *
+     * @param lower
+     * @param upper
+     * @return inDeviceRange
+     */
     protected boolean checkUserInputtedRange(double lower, double upper){
         return (lower<upper&&lower>=deviceRangeLower&&upper<=deviceRangeUpper);
     }
 
     //Getters and Setters - AClarke
+
+    /**
+     *
+     * @return deviceRangeLower
+     */
     public double getDeviceRangeLower() {
         return deviceRangeLower;
     }
 
+    /**
+     *
+     * @param deviceRangeLower
+     */
     public void setDeviceRangeLower(double deviceRangeLower) {
         this.deviceRangeLower = deviceRangeLower;
     }
 
+    /**
+     *
+     * @return deviceRangeUpper
+     */
     public double getDeviceRangeUpper() {
         return deviceRangeUpper;
     }
 
+    /**
+     *
+     * @param deviceRangeUpper
+     */
     public void setDeviceRangeUpper(double deviceRangeUpper) {
         this.deviceRangeUpper = deviceRangeUpper;
     }
 
+    /**
+     *
+     * @return userInputtedRangeLower
+     */
     public double getUserInputedRangeLower() {
         return userInputedRangeLower;
     }
 
+    /**
+     *
+     * @param userInputedRangeLower
+     */
     public void setUserInputedRangeLower(double userInputedRangeLower) {
         this.userInputedRangeLower = userInputedRangeLower;
     }
 
+    /**
+     *
+     * @return userInputtedRangeUpper
+     */
     public double getUserInputedRangeUpper() {
         return userInputedRangeUpper;
     }
 
+    /**
+     *
+     * @param userInputedRangeUpper
+     */
     public void setUserInputedRangeUpper(double userInputedRangeUpper) {
         this.userInputedRangeUpper = userInputedRangeUpper;
     }
 
+    /**
+     *
+     * @return current
+     */
     public double getCurrent() {
         return current;
     }
 
+    /**
+     *
+     * @param current
+     */
     public void setCurrent(double current) {
         this.current = current;
     }

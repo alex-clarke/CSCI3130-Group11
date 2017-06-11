@@ -6,8 +6,6 @@ package com.csci3130_group11.csci3130_group11;
 
 //lalalala
 
-import android.content.Intent;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -16,9 +14,9 @@ public class Util implements Serializable{
     /*
     Variables for objects
      */
-    Light l; //Light
-    Temperature t; // temperature
-    Humidity h; //humidity
+    private static Light l; //Light
+    private static Temperature t; // temperature
+    private static Humidity h; //humidity
 
     public static double increase(double d) {
         BigDecimal b1 = new BigDecimal(Double.toString(d));
@@ -46,5 +44,54 @@ public class Util implements Serializable{
         temperature = t;
         humidity = h;
         light = l;
+    }
+
+    //Getters and Setters - AClarke
+    /**
+     *
+     * @return h
+     */
+    public static Humidity getHumidity() {
+        return h;
+    }
+
+    /**
+     *
+     * @return l
+     */
+    public static Light getLight() {
+        return l;
+    }
+
+    /**
+     *
+     * @return t
+     */
+    public static Temperature getTemperature() {
+        return t;
+    }
+
+    /**
+     *
+     * @param humidity
+     */
+    public static void setHumidity(Humidity humidity) {
+        h = humidity;
+    }
+
+    /**
+     *
+     * @param light
+     */
+    public static void setLight(Light light) {
+        l = light;
+    }
+
+    /**
+     *
+     * @param temperature
+     */
+    public static void setTemperature(Temperature temperature) {
+        t = temperature;
     }
 }

@@ -2,11 +2,10 @@ package com.csci3130_group11.csci3130_group11;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -142,20 +141,20 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
             if (humidityMax.getText().hashCode() == s.hashCode()||humidityMin.getText().hashCode() == s.hashCode())
             {
                 isRangeEmpty(humidityMax, h.getDeviceRangeUpper());
-                isRangeEmpty(humidityMin, h.getDeviceLowerRange());
+                isRangeEmpty(humidityMin, h.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
                 checkRange(humidityMax, humidityMin, h,true);
 
             }
             else if (tempMax.getText().hashCode() == s.hashCode()||tempMin.getText().hashCode() == s.hashCode())
             {
                 isRangeEmpty(tempMax, t.getDeviceRangeUpper());
-                isRangeEmpty(tempMin,t.getDeviceLowerRange());
+                isRangeEmpty(tempMin,t.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
                 checkRange(tempMax, tempMin,t ,true);
             }
             else if (lightMax.getText().hashCode() == s.hashCode()||lightMin.getText().hashCode() == s.hashCode())
             {
                 isRangeEmpty(lightMax, l.getDeviceRangeUpper());
-                isRangeEmpty(lightMin,l.getDeviceLowerRange());
+                isRangeEmpty(lightMin,l.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
                 checkRange(lightMax, lightMin,l ,true);
             }
         }
@@ -170,7 +169,7 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
      * @param warning, if true it will execute a toast warning if requirements are not met
      * @return true if requirements met
      */
-    public boolean checkRange( EditText max, EditText min, measurement type,boolean warning){
+    public boolean checkRange( EditText max, EditText min, Measurement type,boolean warning){
         double maxValue = Double.parseDouble(max.getText().toString());
         double minValue = Double.parseDouble(min.getText().toString());
         double upRange = type.getDeviceRangeUpper();
