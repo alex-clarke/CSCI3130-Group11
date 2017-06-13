@@ -133,8 +133,11 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
     After pressing the bottom set Ranges it creates a new activity
      */
     public void onClick(View v){
-        Intent intent = new Intent(DisplayCurrentData.this, SetRanges.class);
-        startActivity(intent);
+        int i = v.getId();
+        if (i==R.id.change_range_button) {
+            Intent intent = new Intent(this, SetRanges.class);
+            startActivity(intent);
+        }
     }
 
 }

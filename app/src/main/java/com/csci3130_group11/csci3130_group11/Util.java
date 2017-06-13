@@ -40,11 +40,6 @@ public class Util implements Serializable{
 
     }
 
-    public static void assignObjects(Temperature temperature, Humidity humidity, Light light){
-        temperature = t;
-        humidity = h;
-        light = l;
-    }
 
     //Getters and Setters - AClarke
     /**

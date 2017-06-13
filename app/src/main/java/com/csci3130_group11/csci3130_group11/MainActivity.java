@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (i==R.id.data_button){
             nextPage = new Intent(this, DisplayCurrentData.class);
             startActivity(nextPage);
-
-
         }
         else if (i== R.id.visualization_button){
             nextPage = new Intent(this, DisplayHistoricalData.class);

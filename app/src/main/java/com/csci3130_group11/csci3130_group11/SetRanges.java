@@ -53,9 +53,11 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
         Intent intent = getIntent();
 
         /*
-        Assigns objects
+        Gets objects
          */
-        Util.assignObjects(t, h, l);
+        l=Util.getLight();
+        h=Util.getHumidity();
+        t=Util.getTemperature();
 
         /*
         assignes EditTexts to variavles
