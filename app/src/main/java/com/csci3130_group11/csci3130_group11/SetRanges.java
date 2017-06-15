@@ -356,6 +356,8 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
             if (checkAllRanges()){
                 // here we save the new information and update the data base.
                 updateNewValues();
+                Intent nextPage = new Intent(this, DisplayCurrentData.class);
+                startActivity(nextPage);
             }
             else{
                 warningMessage("Please modify the RED fields as instructed");
