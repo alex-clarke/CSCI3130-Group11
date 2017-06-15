@@ -17,14 +17,14 @@ public class TemperatureTests {  //Low:-40  High:125
         assertEquals(t.checkUserInputtedRange(-50, 40), false);
         assertEquals(t.checkUserInputtedRange(-20, 130), false);
         assertEquals(t.checkUserInputtedRange(20, 40), true);
-        assertEquals(t.checkUserInputtedRange(-40, -125), true);
+        assertEquals(t.checkUserInputtedRange(-40, 125), true);
     }
 
     @Test
     public void withinMeasurement() throws Exception {
         Temperature t = new Temperature();
-        assertEquals(t.checkMeasurement(0), false);
-        assertEquals(t.checkMeasurement(40), false);
+        assertEquals(t.checkMeasurement(-50), false);
+        assertEquals(t.checkMeasurement(180), false);
         assertEquals(t.checkMeasurement(20), true);
     }
 }

@@ -13,9 +13,9 @@ public class HumidityUnitTests {
     @Test
     public void checkHumidityRange() throws Exception {
         Humidity h = new Humidity();
-        assertTrue(h.checkMeasurement(25));
-        assertFalse(h.checkMeasurement(80));
-        assertFalse(h.checkMeasurement(0));
+        assertTrue(h.checkMeasurement(50));
+        assertFalse(h.checkMeasurement(110));
+        assertFalse(h.checkMeasurement(-1));
     }
     @Test
     public void checkInputtedHumidityRange() throws Exception {
