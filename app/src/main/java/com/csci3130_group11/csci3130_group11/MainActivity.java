@@ -1,10 +1,15 @@
 package com.csci3130_group11.csci3130_group11;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -14,6 +19,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button currButton;
     Button histoButton;
     Button settButton;
+
+    //testing button
+    Button tester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +41,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         histoButton =(Button) findViewById(R.id.visualization_button);
         settButton = (Button) findViewById(R.id.setting_button);
 
+
+        tester =  (Button) findViewById(R.id.testing);
+
         /*
         On click method is called as soon as the View (Buttons) is clicked
          */
         currButton.setOnClickListener(this);
         histoButton.setOnClickListener(this);
         settButton.setOnClickListener(this);
+
+        tester.setOnClickListener(this);
 
     }
 
@@ -65,8 +78,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             nextPage = new Intent(this, Settings.class);
             startActivity(nextPage);
         }
+        else if(i==R.id.testing){
+         //Alarm....This should be created on its own class once settings are fixed
+
+            //get time
+            Date time = new Date(System.currentTimeMillis());
+            //create an intent that will be  Broadcasted (send to Android OS)
+            Intent alertIntent = new Intent(getApplicationContext(), BroadcastAlarm.class);
+            // creates an alarmManager
+            AlarmManager alarmManager =  (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            // sends it
+            PendingIntent pendingIntent = PendingIntent.getBroadcast( getApplicationContext(), 0,  alertIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+            // Updates alarmManager as a repeating alarm.
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    time.getTime(),
+                    60000,
+                    pendingIntent);
 
 
+        }
 
     }
 

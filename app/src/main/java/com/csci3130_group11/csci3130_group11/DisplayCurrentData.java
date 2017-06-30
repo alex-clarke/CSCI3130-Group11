@@ -2,8 +2,10 @@ package com.csci3130_group11.csci3130_group11;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -37,20 +39,16 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
      */
     Button setRangesButton;
 
+    /**
+     * Constructor to create Objects for background process
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_current_data);
 
-        /*
-        Obtained the intent that started this activity
-         */
-        Intent intent = getIntent();
 
-        /*
-        Objects representing the data are assigned here.
-         */
-       // Util.assignObjects(t, h, l);
         /*
         Objects 
          */
@@ -74,7 +72,10 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
          */
         setRangesButton = (Button) findViewById(R.id.change_range_button);
         setRangesButton.setOnClickListener(this);
-        toastWarning();
+        /*
+        Sets the saved ranges
+         */
+        Util.retrieveSavedRanges(getApplicationContext());
         /*
         Data gets displayed
          */
@@ -86,9 +87,9 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
 
     }
 
-    /*
-        Displays the data and verifies that data is within the requested parameters. If not error
-        message is displayes along with a toast.
+    /**
+     * Displays the data and verifies that data is within the requested parameters.
+     * If not error message is displayes along with a toast.
      */
     public void displayData(TextView current, TextView low, TextView high, Measurement data){
 
@@ -108,20 +109,20 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /*
-    Set the text for the TextViews.
+    /**
+     *Set the text for the TextViews.
      */
     public void setData(TextView current, TextView low, TextView high, Measurement data){
-        current.setText(data.getCurrent() + "");
+        current.setText(Double.toString(data.getCurrent()));
         low.setText(data.getUserInputedRangeLower()+ "");
         high.setText(data.getUserInputedRangeUpper()+ "");
     }
 
-    /*
-    Toast for error
+
+    /**
+     * Toast for error
      */
     public void toastWarning(){
-
         Context context = getApplicationContext();
         CharSequence text = "WARNING: SOMETHING IS OUT OF RANGE";
         int duration = Toast.LENGTH_SHORT;
@@ -129,12 +130,23 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         toast.show();
     }
 
-    /*
-    After pressing the bottom set Ranges it creates a new activity
+    /**
+     *After pressing the bottom set Ranges it creates a new activity
      */
     public void onClick(View v){
         Intent intent = new Intent(DisplayCurrentData.this, SetRanges.class);
         startActivity(intent);
     }
+
+    /**
+     * Refresh previous activity with updated data
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+
 
 }

@@ -1,15 +1,16 @@
 package com.csci3130_group11.csci3130_group11;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SetRanges extends AppCompatActivity implements View.OnClickListener {
@@ -24,11 +25,6 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
     private EditText tempMin;
     private EditText lightMax;
     private EditText lightMin;
-
-    private TextView humidity;
-    private TextView temperature;
-    private TextView light;
-
     private Button clear;
     private Button increase;
     private Button decrease;
@@ -46,11 +42,6 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_ranges);
-       /*
-        gets intent from parent activity. This is not required
-         */
-
-        Intent intent = getIntent();
 
                 /*
         Objects
@@ -69,9 +60,6 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
         lightMax = (EditText) findViewById(R.id.light_max);
         lightMin = (EditText) findViewById(R.id.light_min);
 
-        temperature = (TextView) findViewById(R.id.text_temp);
-        humidity = (TextView) findViewById(R.id.text_humidity);
-        light = (TextView) findViewById((R.id.text_light));
 
         /*
         Assignes Buttons to variables
@@ -100,12 +88,12 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
         /**
          * Checks for input as user enters it.
          */
-        humidityMax.addTextChangedListener(generalTextWatcher);
-        humidityMin.addTextChangedListener(generalTextWatcher);
-        tempMax.addTextChangedListener(generalTextWatcher);
-        tempMin.addTextChangedListener(generalTextWatcher);
-        lightMax.addTextChangedListener(generalTextWatcher);
-        lightMin.addTextChangedListener(generalTextWatcher);
+            humidityMax.addTextChangedListener(generalTextWatcher);
+            humidityMin.addTextChangedListener(generalTextWatcher);
+            tempMax.addTextChangedListener(generalTextWatcher);
+            tempMin.addTextChangedListener(generalTextWatcher);
+            lightMax.addTextChangedListener(generalTextWatcher);
+            lightMin.addTextChangedListener(generalTextWatcher);
 
     }
 
@@ -133,33 +121,21 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
             //NO NEED FOR THIS
 
         }
-
-        @Override
         /**
          * If the string modified equals to one of the sets (max or min data) it will check for
          * user input. Empty strings are not allowed since it will make the app crash
          */
-        public void afterTextChanged(Editable s) {
-            if (humidityMax.getText().hashCode() == s.hashCode()||humidityMin.getText().hashCode() == s.hashCode())
-            {
-                isRangeEmpty(humidityMax, h.getDeviceRangeUpper());
-                isRangeEmpty(humidityMin, h.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
-                checkRange(humidityMax, humidityMin, h,true);
-
+        public void afterTextChanged(Editable s){
+                try {
+                    if (humidityMax.getText().hashCode() == s.hashCode() || humidityMin.getText().hashCode() == s.hashCode()) {
+                        checkRange(humidityMax, humidityMin, h, true);
+                    } else if (tempMax.getText().hashCode() == s.hashCode() || tempMin.getText().hashCode() == s.hashCode()) {
+                        checkRange(tempMax, tempMin, t, true);
+                    } else if (lightMax.getText().hashCode() == s.hashCode() || lightMin.getText().hashCode() == s.hashCode()) {
+                        checkRange(lightMax, lightMin, l, true);
+                    }
+                } catch (Exception e) {}
             }
-            else if (tempMax.getText().hashCode() == s.hashCode()||tempMin.getText().hashCode() == s.hashCode())
-            {
-                isRangeEmpty(tempMax, t.getDeviceRangeUpper());
-                isRangeEmpty(tempMin,t.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
-                checkRange(tempMax, tempMin,t ,true);
-            }
-            else if (lightMax.getText().hashCode() == s.hashCode()||lightMin.getText().hashCode() == s.hashCode())
-            {
-                isRangeEmpty(lightMax, l.getDeviceRangeUpper());
-                isRangeEmpty(lightMin,l.getDeviceRangeLower());//Changed from getDeviceLowerRange() - AClarke
-                checkRange(lightMax, lightMin,l ,true);
-            }
-        }
     };
 
     /**
@@ -220,7 +196,7 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
      * @param msg, String to be displayed
      */
     public void warningMessage ( String msg){
-        Toast toast = Toast.makeText(SetRanges.this, msg, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(SetRanges.this, msg, Toast.LENGTH_SHORT);
         toast.show();
 
     }
@@ -234,42 +210,56 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
      */
     public void changeSelectedRange(boolean addition){
 
-        double value;
-
-
-        /**
-         * checks if user is requesting an addition ot a substraction
-         */
-        int addOrSub = 1;
-        if (!addition){addOrSub= -1 ;}
+            double value;
+            /**
+             * checks if user is requesting an addition ot a substraction
+             */
+            int addOrSub = 1;
+            if (!addition) {
+                addOrSub = -1;
+            }
 
         /*
         selects the data from the selected editText.
          */
-        if (humidityMax.isFocused()){
-            value = Double.parseDouble(humidityMax.getText().toString()) + addOrSub;
-            humidityMax.setText(value+"");
-        }
-        else if (humidityMin.isFocused()) {
-            value = Double.parseDouble(humidityMin.getText().toString()) + addOrSub;
-            humidityMin.setText(value+"");
-        }
-        else if (tempMax.isFocused()) {
-            value = Double.parseDouble(tempMax.getText().toString()) + addOrSub;
-            tempMax.setText(value+"");
-        }
-        else if (tempMin.isFocused()) {
-            value = Double.parseDouble(tempMin.getText().toString()) + addOrSub;
-            tempMin.setText(value+"");
-        }
-        else if(lightMax.isFocused()) {
-            value = Double.parseDouble(lightMax.getText().toString()) + addOrSub;
-            lightMax.setText(value+"");
-        }
-        else if(lightMin.isFocused()) {
-            value = Double.parseDouble(lightMin.getText().toString()) + addOrSub;
-            lightMin.setText(value+"");
-        }
+            if (humidityMax.isFocused()) {
+                //next if statement deals with empty string while parsing
+                if (humidityMax.getText().toString().equals("")) {
+                    humidityMax.setText(h.getUserInputedRangeUpper()+"");
+                }
+                value = Double.parseDouble(humidityMax.getText().toString()) + addOrSub;
+                humidityMax.setText(value + "");
+            } else if (humidityMin.isFocused()) {
+                if (humidityMin.getText().toString().equals("")) {
+                    humidityMin.setText(h.getUserInputedRangeLower()+"");
+                }
+                value = Double.parseDouble(humidityMin.getText().toString()) + addOrSub;
+                humidityMin.setText(value + "");
+            } else if (tempMax.isFocused()) {
+                if (tempMax.getText().toString().equals("")) {
+                    tempMax.setText(t.getUserInputedRangeUpper()+"");
+                }
+                value = Double.parseDouble(tempMax.getText().toString()) + addOrSub;
+                tempMax.setText(value + "");
+            } else if (tempMin.isFocused()) {
+                if (tempMin.getText().toString().equals("")) {
+                    tempMin.setText(t.getUserInputedRangeLower()+"");
+                }
+                value = Double.parseDouble(tempMin.getText().toString()) + addOrSub;
+                tempMin.setText(value + "");
+            } else if (lightMax.isFocused()) {
+                if (lightMax.getText().toString().equals("")) {
+                    lightMax.setText(l.getUserInputedRangeUpper()+"");
+                }
+                value = Double.parseDouble(lightMax.getText().toString()) + addOrSub;
+                lightMax.setText(value + "");
+            } else if (lightMin.isFocused()) {
+                if (lightMin.getText().toString().equals("")) {
+                    lightMin.setText(l.getUserInputedRangeLower()+"");
+                }
+                value = Double.parseDouble(lightMin.getText().toString()) + addOrSub;
+                lightMin.setText(value + "");
+            }
     }
 
     /**
@@ -313,23 +303,19 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
     }
 
     /**
-     * sets object variables with inputted data
+     * Updates the ranges entered by user into their corresponing key values.
      */
     public void updateNewValues(){
 
-        double hMax = Double.parseDouble(humidityMax.getText().toString());
-        double hMin = Double.parseDouble(humidityMin.getText().toString());
-        double tMax = Double.parseDouble(tempMax.getText().toString());
-        double tMin = Double.parseDouble(tempMin.getText().toString());
-        double lMax = Double.parseDouble(lightMax.getText().toString());
-        double lMin = Double.parseDouble(lightMin.getText().toString());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor savedData = preferences.edit();
 
-        h.setUserInputedRangeLower(hMin);
-        l.setUserInputedRangeLower(lMin);
-        t.setUserInputedRangeLower(tMin);
-        h.setUserInputedRangeUpper(hMax);
-        l.setUserInputedRangeUpper(lMax);
-        t.setUserInputedRangeUpper(tMax);
+        savedData.putString("TEMPERATURE_LOW", tempMin.getText().toString()).commit();
+        savedData.putString("TEMPERATURE_HIGH", tempMax.getText().toString()).commit();
+        savedData.putString("HUMIDITY_LOW", humidityMin.getText().toString()).apply();
+        savedData.putString("HUMIDITY_HIGH", humidityMax.getText().toString()).apply();
+        savedData.putString("LIGHT_LOW", lightMin.getText().toString()).apply();
+        savedData.putString("LIGHT_HIGH", lightMax.getText().toString()).apply();
 
     }
 
@@ -353,9 +339,17 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
             setInitialValues();
         }
         else if(i==saveChanges.getId()){
+
+            isRangeEmpty(humidityMax, h.getUserInputedRangeUpper());
+            isRangeEmpty(humidityMin, h.getUserInputedRangeLower());
+            isRangeEmpty(tempMax, t.getUserInputedRangeUpper());
+            isRangeEmpty(tempMin,t.getUserInputedRangeLower());
+            isRangeEmpty(lightMax, l.getUserInputedRangeUpper());
+            isRangeEmpty(lightMin,l.getUserInputedRangeLower());
+
             if (checkAllRanges()){
-                // here we save the new information and update the data base.
                 updateNewValues();
+                warningMessage("RANGES HAVE BEEN SAVED");
                 Intent nextPage = new Intent(this, DisplayCurrentData.class);
                 startActivity(nextPage);
             }
@@ -364,5 +358,14 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
             }
 
         }
+    }
+
+    /**
+     * Refresh previous activity with updated data
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, DisplayCurrentData.class));
     }
 }

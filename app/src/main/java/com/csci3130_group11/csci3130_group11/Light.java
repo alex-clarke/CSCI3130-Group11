@@ -1,10 +1,14 @@
 package com.csci3130_group11.csci3130_group11;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * Created by aclarke on 2017-06-06.
  */
 
 public class Light extends Measurement {
+
     public Light(){
         super();
         deviceRangeLower=0;
@@ -28,4 +32,5 @@ public class Light extends Measurement {
         userInputedRangeLower=low;
         userInputedRangeUpper=high;
     }
+
 }

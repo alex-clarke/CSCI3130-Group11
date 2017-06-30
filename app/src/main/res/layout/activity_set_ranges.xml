@@ -60,7 +60,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <EditText
@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <EditText
@@ -112,7 +112,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <TextView
@@ -142,7 +142,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <EditText
@@ -152,7 +152,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="0.0"
-            android:inputType="numberDecimal"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="18sp" />
 
         <TextView
