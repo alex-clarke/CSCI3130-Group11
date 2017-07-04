@@ -22,5 +22,6 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.csci3130_group11.csci3130_group11", appContext.getPackageName());
+    
     }
 }
