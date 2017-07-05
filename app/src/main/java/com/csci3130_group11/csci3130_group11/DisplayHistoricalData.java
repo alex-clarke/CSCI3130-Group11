@@ -28,7 +28,7 @@ public class DisplayHistoricalData extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_display_historical_data);
 
 
         btn_day = (Button) findViewById(R.id.btn_day);
