@@ -12,14 +12,32 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Scanner;
+
 public class DisplayCurrentData extends AppCompatActivity implements View.OnClickListener{
 
     /*
-        Objects representing the data already created.
-         */
+    Objects representing the data already created.
+    */
     Light l ;
     Humidity h ;
     Temperature t ;
+
+    /*
+     Firebase objects
+     */
+    private DatabaseReference firebaseReference;
+    private FirebaseDatabase firebaseDBInstance;
+    /*
+     Scanner for parsing strings from firebase
+     */
+    Scanner scr;
 
     /*
     Textviews for data display
@@ -48,6 +66,11 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_current_data);
 
+        /*
+        Firebase connectivity
+         */
+        firebaseDBInstance = FirebaseDatabase.getInstance();
+        firebaseReference = firebaseDBInstance.getReference();
 
         /*
         Objects 
@@ -55,6 +78,8 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         l=Util.getLight();
         h=Util.getHumidity();
         t=Util.getTemperature();
+
+
         /*
         TextViews get assigned
          */
@@ -76,15 +101,51 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         Sets the saved ranges
          */
         Util.retrieveSavedRanges(getApplicationContext());
+
+
         /*
         Data gets displayed
          */
-        displayData(tCurrent, tLow, tHigh, t);
-        displayData(hCurrent, hLow, hHigh, h);
-        displayData(lCurrent, lLow, lHigh, l);
 
+        // Read from the database
+        firebaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
 
+                //Get the data, as a string, from firebase
+                String tempStr = dataSnapshot.child("current").child("temp").getValue(String.class);
+                //Scanner to parse the string to double
+                scr = new Scanner(tempStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double tempCurrent = scr.nextDouble();
+                //Set current value of the object to be the value from firebase
+                t.setCurrent(tempCurrent);
 
+                String humStr = dataSnapshot.child("current").child("hum").getValue(String.class);
+                scr = new Scanner(humStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double humCurrent = scr.nextDouble();
+                h.setCurrent(humCurrent);
+
+                String lightStr = dataSnapshot.child("current").child("light").getValue(String.class);
+                scr = new Scanner(lightStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double lightCurrent = scr.nextDouble();
+                l.setCurrent(lightCurrent);
+
+                displayData(tCurrent, tLow, tHigh, t);
+                displayData(hCurrent, hLow, hHigh, h);
+                displayData(lCurrent, lLow, lHigh, l);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                //TODO Some kind of message display here
+            }
+        });
     }
 
     /**
