@@ -135,6 +135,8 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
                 double lightCurrent = scr.nextDouble();
                 l.setCurrent(lightCurrent);
 
+                TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
+                warningTextView.setText("");
                 displayData(tCurrent, tLow, tHigh, t);
                 displayData(hCurrent, hLow, hHigh, h);
                 displayData(lCurrent, lLow, lHigh, l);
@@ -150,9 +152,11 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
 
     /**
      * Displays the data and verifies that data is within the requested parameters.
-     * If not error message is displayes along with a toast.
+     * If not error message is displayed.
      */
     public void displayData(TextView current, TextView low, TextView high, Measurement data){
+
+        TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
 
         if(data.checkMeasurement(data.getCurrent())){
             current.setTextColor(Color.GREEN);
@@ -165,7 +169,8 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
             low.setTextColor(Color.RED);
             high.setTextColor(Color.RED);
             setData(current, low, high, data);
-            toastWarning();
+            warningTextView.setText("WARNING: Something is out of range!");
+            warningTextView.setTextColor(Color.RED);
 
         }
     }
