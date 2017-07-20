@@ -1,11 +1,15 @@
 package com.csci3130_group11.csci3130_group11;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * Created by Kyle on 2017-06-04.
  */
 
 
-public class Measurement {
+public class Measurement extends Activity{
 
     protected double userInputedRangeLower;
     protected double userInputedRangeUpper;
@@ -13,8 +17,10 @@ public class Measurement {
     protected double deviceRangeUpper;
     protected double current;
 
+
     protected Measurement(){
 
+        current = 0;
     }
 
     protected boolean checkMeasurement(double val){
@@ -116,5 +122,17 @@ public class Measurement {
      */
     public void setCurrent(double current) {
         this.current = current;
+    }
+
+    /**
+     * Static method to check measurements during background process
+     * @param upperRange
+     * @param lowerRange
+     * @param current
+     * @return
+     */
+    public static boolean checkRanges(double upperRange, double lowerRange, double current){
+
+        return (current>lowerRange && current<upperRange);
     }
 }

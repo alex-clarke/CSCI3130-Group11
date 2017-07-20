@@ -2,22 +2,42 @@ package com.csci3130_group11.csci3130_group11;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Scanner;
+
 public class DisplayCurrentData extends AppCompatActivity implements View.OnClickListener{
 
     /*
-        Objects representing the data already created.
-         */
+    Objects representing the data already created.
+    */
     Light l ;
     Humidity h ;
     Temperature t ;
+
+    /*
+     Firebase objects
+     */
+    private DatabaseReference firebaseReference;
+    private FirebaseDatabase firebaseDBInstance;
+    /*
+     Scanner for parsing strings from firebase
+     */
+    Scanner scr;
 
     /*
     Textviews for data display
@@ -37,26 +57,29 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
      */
     Button setRangesButton;
 
+    /**
+     * Constructor to create Objects for background process
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_current_data);
 
         /*
-        Obtained the intent that started this activity
+        Firebase connectivity
          */
-        Intent intent = getIntent();
+        firebaseDBInstance = FirebaseDatabase.getInstance();
+        firebaseReference = firebaseDBInstance.getReference();
 
-        /*
-        Objects representing the data are assigned here.
-         */
-       // Util.assignObjects(t, h, l);
         /*
         Objects 
          */
         l=Util.getLight();
         h=Util.getHumidity();
         t=Util.getTemperature();
+
+
         /*
         TextViews get assigned
          */
@@ -74,23 +97,66 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
          */
         setRangesButton = (Button) findViewById(R.id.change_range_button);
         setRangesButton.setOnClickListener(this);
-        toastWarning();
+        /*
+        Sets the saved ranges
+         */
+        Util.retrieveSavedRanges(getApplicationContext());
+
+
         /*
         Data gets displayed
          */
-        displayData(tCurrent, tLow, tHigh, t);
-        displayData(hCurrent, hLow, hHigh, h);
-        displayData(lCurrent, lLow, lHigh, l);
 
+        // Read from the database
+        firebaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
 
+                //Get the data, as a string, from firebase
+                String tempStr = dataSnapshot.child("current").child("temp").getValue(String.class);
+                //Scanner to parse the string to double
+                scr = new Scanner(tempStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double tempCurrent = scr.nextDouble();
+                //Set current value of the object to be the value from firebase
+                t.setCurrent(tempCurrent);
 
+                String humStr = dataSnapshot.child("current").child("hum").getValue(String.class);
+                scr = new Scanner(humStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double humCurrent = scr.nextDouble();
+                h.setCurrent(humCurrent);
+
+                String lightStr = dataSnapshot.child("current").child("light").getValue(String.class);
+                scr = new Scanner(lightStr);
+                scr.useDelimiter("[^\\p{Alnum},\\.-]");
+                double lightCurrent = scr.nextDouble();
+                l.setCurrent(lightCurrent);
+
+                TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
+                warningTextView.setText("");
+                displayData(tCurrent, tLow, tHigh, t);
+                displayData(hCurrent, hLow, hHigh, h);
+                displayData(lCurrent, lLow, lHigh, l);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                //TODO Some kind of message display here
+            }
+        });
     }
 
-    /*
-        Displays the data and verifies that data is within the requested parameters. If not error
-        message is displayes along with a toast.
+    /**
+     * Displays the data and verifies that data is within the requested parameters.
+     * If not error message is displayed.
      */
     public void displayData(TextView current, TextView low, TextView high, Measurement data){
+
+        TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
 
         if(data.checkMeasurement(data.getCurrent())){
             current.setTextColor(Color.GREEN);
@@ -103,25 +169,26 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
             low.setTextColor(Color.RED);
             high.setTextColor(Color.RED);
             setData(current, low, high, data);
-            toastWarning();
+            warningTextView.setText("WARNING: Something is out of range!");
+            warningTextView.setTextColor(Color.RED);
 
         }
     }
 
-    /*
-    Set the text for the TextViews.
+    /**
+     *Set the text for the TextViews.
      */
     public void setData(TextView current, TextView low, TextView high, Measurement data){
-        current.setText(data.getCurrent() + "");
+        current.setText(Double.toString(data.getCurrent()));
         low.setText(data.getUserInputedRangeLower()+ "");
         high.setText(data.getUserInputedRangeUpper()+ "");
     }
 
-    /*
-    Toast for error
+
+    /**
+     * Toast for error
      */
     public void toastWarning(){
-
         Context context = getApplicationContext();
         CharSequence text = "WARNING: SOMETHING IS OUT OF RANGE";
         int duration = Toast.LENGTH_SHORT;
@@ -129,8 +196,8 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         toast.show();
     }
 
-    /*
-    After pressing the bottom set Ranges it creates a new activity
+    /**
+     *After pressing the bottom set Ranges it creates a new activity
      */
     public void onClick(View v){
         int i = v.getId();
@@ -139,5 +206,16 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
             startActivity(intent);
         }
     }
+
+    /**
+     * Refresh previous activity with updated data
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+
 
 }
