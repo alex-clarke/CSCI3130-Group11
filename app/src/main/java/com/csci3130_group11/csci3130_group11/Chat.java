@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Chat extends AppCompatActivity {
@@ -53,17 +55,61 @@ public class Chat extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Map<String, Object> m = new HashMap<String, Object>();
                 messageKey = firebaseReference.push().getKey();
                 firebaseReference.updateChildren(m);
-                DatabaseReference message = firebaseReference.child(messageKey);
 
+                DatabaseReference messageRef = firebaseReference.child(messageKey);
                 Map<String, Object> mContent = new HashMap<String, Object>();
                 mContent.put("username", userName);
+                mContent.put("content", message.getText().toString());
+
+                messageRef.updateChildren(mContent);
+            }
+        });
+
+        firebaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                appendConversation(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                appendConversation(dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
 
+    }
+
+    private String conversationMessage;
+    private String conversationUserName;
+    private void appendConversation(DataSnapshot dataSnapshot) {
+        Iterator it = dataSnapshot.getChildren().iterator();
+
+        while(it.hasNext()){
+            conversationMessage = (String) ((DataSnapshot)it.next()).getValue();
+            conversationUserName = (String) ((DataSnapshot)it.next()).getValue();
+
+            postedMessages.append(conversationUserName +": " + conversationMessage+"\n");
+        }
     }
 
     /**
