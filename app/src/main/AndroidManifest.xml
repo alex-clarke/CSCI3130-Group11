@@ -22,8 +22,20 @@
         <activity android:name=".DisplayHistoricalData" />
         <activity android:name=".DisplayCurrentData" />
         <activity android:name=".SetRanges" />
-        <activity android:name=".Settings">/></activity>
+        <activity android:name=".Settings">
+            /></activity>
+
         <receiver android:name=".BroadcastAlarm" />
+
+        <activity
+            android:name=".Chat"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.csci3130_group11.csci3130_group11.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

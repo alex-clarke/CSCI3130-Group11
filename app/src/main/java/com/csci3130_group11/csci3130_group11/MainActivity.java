@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button currButton;
     Button histoButton;
     Button settButton;
+    Button chatButton;
 
     //testing button
     Button tester;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currButton = (Button) findViewById(R.id.data_button);
         histoButton =(Button) findViewById(R.id.visualization_button);
         settButton = (Button) findViewById(R.id.setting_button);
+        chatButton = (Button) findViewById(R.id.chat_button);
 
 
         tester =  (Button) findViewById(R.id.testing);
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currButton.setOnClickListener(this);
         histoButton.setOnClickListener(this);
         settButton.setOnClickListener(this);
+        chatButton.setOnClickListener(this);
 
         tester.setOnClickListener(this);
 
@@ -74,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (i== R.id.setting_button){
             nextPage = new Intent(this, Settings.class);
+            startActivity(nextPage);
+        }
+        else if (i== R.id.chat_button){
+            nextPage = new Intent(this, Chat.class);
             startActivity(nextPage);
         }
         else if(i==R.id.testing){
