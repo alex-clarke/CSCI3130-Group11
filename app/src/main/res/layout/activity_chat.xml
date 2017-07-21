@@ -12,28 +12,29 @@
 
         <ScrollView
             android:id="@+id/scrollview"
-            android:layout_width="363dp"
-            android:layout_height="494dp"
+            android:layout_width="334dp"
+            android:layout_height="496dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:fadeScrollbars="false"
             android:fillViewport="false"
             android:scrollbarStyle="insideOverlay"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintLeft_creator="1">
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1">
 
             <TextView
                 android:id="@+id/messageTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="8sp"
-                android:textAlignment="viewStart"
-                android:textSize="24sp" />
+                android:lineSpacingExtra="10sp"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp" />
 
         </ScrollView>
 
@@ -45,31 +46,31 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal"
             android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scrollview"
+            app:layout_constraintVertical_bias="0.4"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.4">
+            tools:layout_constraintRight_creator="1">
 
             <EditText
                 android:id="@+id/messageEditText"
-                android:layout_width="263dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_weight="0.68"
                 android:ems="10"
                 android:hint="Enter your message..."
                 android:inputType="textShortMessage"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollview"
-                android:layout_weight="0.31" />
+                app:layout_constraintTop_toBottomOf="@+id/scrollview" />
 
             <Button
                 android:id="@+id/sendButton"
