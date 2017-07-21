@@ -39,17 +39,19 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="372dp"
             android:layout_height="486dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/messageEditText"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintHorizontal_bias="0.25">
+            android:fillViewport="false"
+            app:layout_constraintBottom_toTopOf="@+id/messageEditText"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/messageTextView"
