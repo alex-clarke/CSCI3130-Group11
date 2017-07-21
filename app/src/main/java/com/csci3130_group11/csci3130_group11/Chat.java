@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -41,14 +42,6 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview));
-        scrollview.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
-
         send = (Button) findViewById(R.id.sendButton);
         message = (EditText) findViewById(R.id.messageEditText);
         postedMessages = (TextView) findViewById(R.id.messageTextView);
@@ -75,6 +68,7 @@ public class Chat extends AppCompatActivity {
                 mContent.put("content", message.getText().toString());
 
                 messageRef.updateChildren(mContent);
+                ((EditText) findViewById(R.id.messageEditText)).setText("");
             }
         });
 
