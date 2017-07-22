@@ -48,6 +48,14 @@ public class Chat extends AppCompatActivity {
 
         setUserName();
 
+        final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview));
+        scrollview.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 100);
+
         /*
         Firebase connectivity
          */
