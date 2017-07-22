@@ -2,13 +2,9 @@ package com.csci3130_group11.csci3130_group11;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -19,26 +15,33 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * This "Chat" class facilitates the chat portion of the greenhouse monitoring app.
+ */
 public class Chat extends AppCompatActivity {
+
+    private Button send;
+    private EditText message;
+    private TextView postedMessages;
+
+    private String userName;
 
     private DatabaseReference firebaseReference;
     private FirebaseDatabase firebaseDBInstance;
 
-    private String userName;
-    private Button send;
-    private EditText message;
-    private TextView postedMessages;
     private String messageKey;
 
+    private String conversationMessage;
+    private String conversationUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
@@ -46,8 +49,15 @@ public class Chat extends AppCompatActivity {
         message = (EditText) findViewById(R.id.messageEditText);
         postedMessages = (TextView) findViewById(R.id.messageTextView);
 
+        /*
+        Have the user enter their desired username
+        Would be nice to save this locally and only ask when they don't have a saved username
+         */
         setUserName();
 
+        /*
+        Have the conversation ScrollView start at the bottom. Showing the latest messages
+         */
         final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview));
         scrollview.postDelayed(new Runnable() {
             @Override
@@ -62,6 +72,9 @@ public class Chat extends AppCompatActivity {
         firebaseDBInstance = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDBInstance.getReference().child("chat");
 
+        /*
+        Listener for button "SEND" to send the inputted message to the database
+         */
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,45 +93,40 @@ public class Chat extends AppCompatActivity {
             }
         });
 
+        /*
+        Firebase methods to update the conversation when a new message is added to the database
+         */
         firebaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendConversation(dataSnapshot);
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 appendConversation(dataSnapshot);
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
-
     }
 
-    private String conversationMessage;
-    private String conversationUserName;
+    /**
+     * This method is called when the database is updated with a new message.
+     * It appends that new message to the conversation.
+     * @param dataSnapshot
+     */
     private void appendConversation(DataSnapshot dataSnapshot) {
         Iterator it = dataSnapshot.getChildren().iterator();
-
         while(it.hasNext()){
             conversationMessage = (String) ((DataSnapshot)it.next()).getValue();
             conversationUserName = (String) ((DataSnapshot)it.next()).getValue();
-
             postedMessages.append(conversationUserName +": " + conversationMessage+"\n");
         }
     }
@@ -129,16 +137,17 @@ public class Chat extends AppCompatActivity {
      * If they cancel entering a name, then go back to main activity.
      */
     public void setUserName() {
+
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setTitle("Enter user name:");
 
-        final EditText inputedName = new EditText(this);
+        final EditText inputtedName = new EditText(this);
 
-        b.setView(inputedName);
+        b.setView(inputtedName);
         b.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                userName = inputedName.getText().toString();
+                userName = inputtedName.getText().toString();
             }
         });
         b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,8 +157,6 @@ public class Chat extends AppCompatActivity {
                 finish();
             }
         });
-
         b.show();
     }
-
 }
