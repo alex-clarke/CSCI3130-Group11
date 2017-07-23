@@ -124,7 +124,7 @@ public class DisplayHistoricalData extends AppCompatActivity implements View.OnC
         });
     }
 
-    /**method dayLight
+    /**method dayLight ~
      * This method sets the data for displaying the light readings for the past
      * seven days.
      * @param count
