@@ -150,7 +150,7 @@ public class Chat extends AppCompatActivity {
      *
      * If the user has set a username previously
      *      Then use that previously entered username
-     * Else
+     * Else ~
      *      Have the user set their user name.
      *      If they enter a user name, then chat.
      *      If they cancel entering a name, then go back to main activity.
