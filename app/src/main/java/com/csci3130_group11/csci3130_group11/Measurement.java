@@ -1,13 +1,6 @@
 package com.csci3130_group11.csci3130_group11;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-/**
- * Created by Kyle on 2017-06-04.
- */
-
 
 public class Measurement extends Activity{
 
@@ -18,11 +11,19 @@ public class Measurement extends Activity{
     protected double current;
 
 
+    /**
+     * Default constructor, sets current to 0.
+     */
     protected Measurement(){
 
         current = 0;
     }
 
+    /**
+     * Checks whether a value is within the objects set range
+     * @param val
+     * @return true or false
+     */
     protected boolean checkMeasurement(double val){
         if(val>userInputedRangeLower && val<userInputedRangeUpper)
             return true;

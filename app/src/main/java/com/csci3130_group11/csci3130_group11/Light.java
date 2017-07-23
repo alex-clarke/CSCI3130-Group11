@@ -9,6 +9,9 @@ import android.preference.PreferenceManager;
 
 public class Light extends Measurement {
 
+    /**
+     * Default constructor for light object
+     */
     public Light(){
         super();
         deviceRangeLower=0;
@@ -16,6 +19,11 @@ public class Light extends Measurement {
         userInputedRangeLower=deviceRangeLower;
         userInputedRangeUpper=deviceRangeUpper;
     }
+
+    /**
+     * Constructor that takes in a current value for light
+     * @param curr
+     */
     public Light(double curr){
         super();
         deviceRangeLower=0;
@@ -24,6 +32,13 @@ public class Light extends Measurement {
         userInputedRangeLower=deviceRangeLower;
         userInputedRangeUpper=deviceRangeUpper;
     }
+
+    /**
+     * Constructor that takes in a current value as well as low and high vales for the ranges.
+     * @param curr
+     * @param low
+     * @param high
+     */
     public Light(double curr, double low, double high){
         super();
         deviceRangeLower=0;
