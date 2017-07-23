@@ -1,7 +1,9 @@
 package com.csci3130_group11.csci3130_group11;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -50,21 +52,9 @@ public class Chat extends AppCompatActivity {
         postedMessages = (TextView) findViewById(R.id.messageTextView);
 
         /*
-        Have the user enter their desired username
-        Would be nice to save this locally and only ask when they don't have a saved username
+        Set the username
          */
         setUserName();
-
-        /*
-        Have the conversation ScrollView start at the bottom. Showing the latest messages
-         */
-        final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview));
-        scrollview.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        }, 100);
 
         /*
         Firebase connectivity
@@ -100,10 +90,12 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendConversation(dataSnapshot);
+                scrollDown();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 appendConversation(dataSnapshot);
+                scrollDown();
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -115,7 +107,28 @@ public class Chat extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        /*
+        Have the conversation ScrollView start at the bottom. Showing the latest messages
+         */
+        scrollDown();
     }
+
+
+    /**
+     * Scrolls the scrollview down to the bottom
+     */
+    private void scrollDown() {
+        final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollview));
+        scrollview.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 100);
+    }
+
+
 
     /**
      * This method is called when the database is updated with a new message.
@@ -132,31 +145,46 @@ public class Chat extends AppCompatActivity {
     }
 
     /**
-     * Have the user set their user name.
-     * If they enter a user name, then chat.
-     * If they cancel entering a name, then go back to main activity.
+     * This method enables the chat class to retrieve/set a username for the user.
+     *
+     * If the user has set a username previously
+     *      Then use that previously entered username
+     * Else
+     *      Have the user set their user name.
+     *      If they enter a user name, then chat.
+     *      If they cancel entering a name, then go back to main activity.
      */
     public void setUserName() {
 
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Enter user name:");
+        String temp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("USERNAME", "defaultStringIfNothingFound");
 
-        final EditText inputtedName = new EditText(this);
+        // if user name exist
+        if(!(temp.equals("defaultStringIfNothingFound"))) {
+            userName = temp;
+        }
+        //if no username exist
+        else if(temp.equals("defaultStringIfNothingFound")){
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle("Enter user name:");
 
-        b.setView(inputtedName);
-        b.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                userName = inputtedName.getText().toString();
-            }
-        });
-        b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                finish();
-            }
-        });
-        b.show();
+            final EditText inputtedName = new EditText(this);
+
+            b.setView(inputtedName);
+            b.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    userName = inputtedName.getText().toString();
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("USERNAME", userName).apply();
+                }
+            });
+            b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    finish();
+                }
+            });
+            b.show();
+        }
     }
 }
