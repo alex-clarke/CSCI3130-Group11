@@ -1,6 +1,7 @@
 package com.csci3130_group11.csci3130_group11;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -186,5 +187,11 @@ public class Chat extends AppCompatActivity {
             });
             b.show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
