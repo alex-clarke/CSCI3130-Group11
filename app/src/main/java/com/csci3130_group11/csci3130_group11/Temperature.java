@@ -7,7 +7,7 @@ package com.csci3130_group11.csci3130_group11;
 public class Temperature extends Measurement {
 
     /**
-     * Default constructor for Temperature object
+     * Default constructor for Temperature object~
      */
     public Temperature(){
         super();

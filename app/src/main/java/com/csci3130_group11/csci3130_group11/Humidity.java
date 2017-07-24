@@ -31,7 +31,7 @@ public class Humidity extends Measurement {
     }
 
     /**
-     * Constructor that takes in a current value as well as low and high vales for the ranges.
+     * Constructor that takes in a current value as well as low and high vales for the ranges.~
      * @param curr
      * @param low
      * @param high

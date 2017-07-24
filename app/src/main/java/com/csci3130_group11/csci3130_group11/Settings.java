@@ -26,7 +26,7 @@ public class Settings extends PreferenceActivity {
     /*current time*/
     private Date time = new Date(System.currentTimeMillis());
 
-    /*sharedPreferences variables*/
+    /*sharedPreferences variables~*/
     CheckBoxPreference warning;
     ListPreference list;
 

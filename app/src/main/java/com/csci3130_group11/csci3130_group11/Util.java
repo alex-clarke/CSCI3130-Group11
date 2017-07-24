@@ -66,7 +66,7 @@ public class Util extends AppCompatActivity {
         h = new Humidity();
     }
 
-    //Getters and Setters - AClarke
+    //Getters and Setters - AClarke~
     /**
      *
      * @return h

@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 public class Light extends Measurement {
 
     /**
-     * Default constructor for light object
+     * Default constructor for light object~
      */
     public Light(){
         super();

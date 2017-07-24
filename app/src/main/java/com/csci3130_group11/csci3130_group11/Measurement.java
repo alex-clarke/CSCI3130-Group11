@@ -12,7 +12,7 @@ public class Measurement extends Activity{
 
 
     /**
-     * Default constructor, sets current to 0.
+     * Default constructor, sets current to 0.~
      */
     protected Measurement(){
 

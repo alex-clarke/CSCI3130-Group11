@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settButton = (Button) findViewById(R.id.setting_button);
         chatButton = (Button) findViewById(R.id.chat_button);
 
-
-        tester =  (Button) findViewById(R.id.testing);
-
         /*
         On click method is called as soon as the View (Buttons) is clicked
          */
@@ -59,12 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settButton.setOnClickListener(this);
         chatButton.setOnClickListener(this);
 
-        tester.setOnClickListener(this);
-
     }
 
     /**
-     * Identifes the click ID and sends user to the selected page.
+     * Identifes the click ID and sends user to the selected page.~
      * @param v
      */
     public void onClick(View v){
@@ -87,25 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (i== R.id.chat_button){
             nextPage = new Intent(this, Chat.class);
             startActivity(nextPage);
-        }
-        else if(i==R.id.testing){
-         //Alarm....This should be created on its own class once settings are fixed
-
-            //get time
-            Date time = new Date(System.currentTimeMillis());
-            //create an intent that will be  Broadcasted (send to Android OS)
-            Intent alertIntent = new Intent(getApplicationContext(), BroadcastAlarm.class);
-            // creates an alarmManager
-            AlarmManager alarmManager =  (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            // sends it
-            PendingIntent pendingIntent = PendingIntent.getBroadcast( getApplicationContext(), 0,  alertIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
-            // Updates alarmManager as a repeating alarm.
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                    time.getTime(),
-                    60000,
-                    pendingIntent);
-
-
         }
 
     }

@@ -160,7 +160,7 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * Displays the data and verifies that data is within the requested parameters.
+     * Displays the data and verifies that data is within the requested parameters.~
      * If not error message is displayed.
      * Notification generator was integrated here since this method checks for out of ranges
      * data.

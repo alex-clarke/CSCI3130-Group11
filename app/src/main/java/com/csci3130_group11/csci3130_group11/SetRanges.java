@@ -17,7 +17,7 @@ public class SetRanges extends AppCompatActivity implements View.OnClickListener
 
 
    /*
-        Creates variables
+        Creates variables~
    */
     private EditText humidityMax;
     private EditText humidityMin;

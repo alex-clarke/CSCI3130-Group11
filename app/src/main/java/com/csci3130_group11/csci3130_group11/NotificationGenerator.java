@@ -118,7 +118,7 @@ public class NotificationGenerator extends AppCompatActivity{
     }
 
     /**
-     *Creates a Message based on current information
+     *Creates a Message based on current information~
      * @return
      */
     protected  static String UpdateInformation(Context context){

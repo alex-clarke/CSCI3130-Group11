@@ -21,7 +21,7 @@ public class BroadcastAlarm extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         /**
-         * Retrieves boolean
+         * Retrieves boolean~
          */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         /**

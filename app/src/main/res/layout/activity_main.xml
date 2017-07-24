@@ -61,18 +61,6 @@
 
     <Button
         android:background="@drawable/btn_shape"
-        android:id="@+id/testing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="ALARM TESTER (should be removed in next Iteration, once settings is done)"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_button" />
-
-    <Button
-        android:background="@drawable/btn_shape"
         android:id="@+id/chat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

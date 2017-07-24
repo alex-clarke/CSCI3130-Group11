@@ -85,7 +85,7 @@ public class DisplayHistoricalData extends AppCompatActivity implements View.OnC
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                //Get the data, as a string, from firebase
+                //Get the data, as a string, from firebase~
                 for (int i = 0; i < 365; i++) {
                     try {
                         String tempStr = dataSnapshot.child("history").child(Integer.toString(i)).child("11").child("54").child("45").child("temp").getValue(String.class);

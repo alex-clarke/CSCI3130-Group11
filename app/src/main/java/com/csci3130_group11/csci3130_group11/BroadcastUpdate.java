@@ -12,7 +12,7 @@ import android.content.Intent;
 public class BroadcastUpdate extends BroadcastReceiver {
 
     /**
-     * Broadcast receiver. Context where it is activated and intent (destination)
+     * Broadcast receiver. Context where it is activated and intent (destination)~
      * @param context
      * @param intent
      */
