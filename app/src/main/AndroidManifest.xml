@@ -24,6 +24,7 @@
         <activity android:name=".SetRanges" />
         <activity android:name=".Settings">/></activity>
         <receiver android:name=".BroadcastAlarm" />
+        <receiver android:name=".BroadcastUpdate" />
     </application>
 
 </manifest>

@@ -31,8 +31,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*
         Creation of objects in main page
          */
-
         Util.createDataObjects();
+        /*Retrieves data as soon as objects are created. For example now user can change the
+         notifications settings without going to current Data to update objects
+          */
+        //Util.retrieveCurrent();
+        //Util.retrieveSavedRanges(getApplicationContext());
 
         /*
         Assignes variables to UI's buttons
@@ -41,17 +45,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         histoButton =(Button) findViewById(R.id.visualization_button);
         settButton = (Button) findViewById(R.id.setting_button);
 
-
-        tester =  (Button) findViewById(R.id.testing);
-
         /*
         On click method is called as soon as the View (Buttons) is clicked
          */
         currButton.setOnClickListener(this);
         histoButton.setOnClickListener(this);
         settButton.setOnClickListener(this);
-
-        tester.setOnClickListener(this);
 
     }
 
@@ -75,25 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (i== R.id.setting_button){
             nextPage = new Intent(this, Settings.class);
             startActivity(nextPage);
-        }
-        else if(i==R.id.testing){
-         //Alarm....This should be created on its own class once settings are fixed
-
-            //get time
-            Date time = new Date(System.currentTimeMillis());
-            //create an intent that will be  Broadcasted (send to Android OS)
-            Intent alertIntent = new Intent(getApplicationContext(), BroadcastAlarm.class);
-            // creates an alarmManager
-            AlarmManager alarmManager =  (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            // sends it
-            PendingIntent pendingIntent = PendingIntent.getBroadcast( getApplicationContext(), 0,  alertIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
-            // Updates alarmManager as a repeating alarm.
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                    time.getTime(),
-                    60000,
-                    pendingIntent);
-
-
         }
 
     }
