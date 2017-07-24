@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
 
         Util.createDataObjects();
+        /*Retrieves data as soon as objects are created. For example now user can change the
+         notifications settings without going to current Data to update objects
+          */
+        //Util.retrieveCurrent();
+        //Util.retrieveSavedRanges(getApplicationContext());
 
         /*
         Assignes variables to UI's buttons

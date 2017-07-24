@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/notification_time"
+        android:entryValues="@array/values"
+        android:key="update_time"
+        android:summary="pick the update time"
+        android:title="Notification Update" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="WarningNotification"
+        android:summary="Get a notification when conditions are out of range"
+        android:title="Warning Notification" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="BuzzNotification"
+        android:title="Vibrate" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="SoundNotification"
+        android:title="Sound" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="LightNotification"
+        android:title="Light" />
+</PreferenceScreen>

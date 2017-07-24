@@ -2,10 +2,13 @@ package com.csci3130_group11.csci3130_group11;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,13 +26,14 @@ public class NotificationGenerator extends AppCompatActivity{
     private static int uniqueID;
     private static final int maxNum = 99999;
     private static final int minNum=10000;
-
+    /*MSG for notification*/
     protected  String message;
-
+    /*Objects for data*/
     protected Light l;
     protected Humidity h;
     protected Temperature t;
-
+    /*SharedPrefeences for saved app data*/
+    protected static SharedPreferences savedData;
 
 
     /**
@@ -68,6 +72,35 @@ public class NotificationGenerator extends AppCompatActivity{
         notification.setContentTitle(msgTitle);
         notification.setContentText(msg);
 
+        // DEFAULT_SOUND : Make sound
+        // DEFAULT_VIBRATE : Vibrate
+        // DEFAULT_LIGHTS : Use the default light notification
+        savedData = PreferenceManager.getDefaultSharedPreferences(CurrentActivity);
+        Boolean vibrate = savedData.getBoolean("BuzzNotification", false);
+        Boolean sound = savedData.getBoolean("SoundNotification", false);
+        Boolean light = savedData.getBoolean("LightNotification", false);
+
+        if(vibrate&&!sound&&!light) {
+            notification.setDefaults(Notification.DEFAULT_VIBRATE);
+        }
+        else if(!vibrate&&sound&&!light) {
+            notification.setDefaults(Notification.DEFAULT_SOUND);
+        }
+        else if(!vibrate&&!sound&&light) {
+            notification.setDefaults(Notification.DEFAULT_LIGHTS);
+        }
+        else if(vibrate&&sound&&!light) {
+            notification.setDefaults(Notification.DEFAULT_VIBRATE|Notification.DEFAULT_SOUND);
+        }
+        else if(vibrate&&!sound&&light) {
+            notification.setDefaults(Notification.DEFAULT_VIBRATE|Notification.DEFAULT_LIGHTS);
+        }
+        else if(!vibrate&&sound&&light) {
+            notification.setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_LIGHTS);
+        }
+        else if(vibrate&&sound&&light) {
+            notification.setDefaults(Notification.DEFAULT_VIBRATE|Notification.DEFAULT_SOUND|Notification.DEFAULT_LIGHTS);
+        }
         // creates an intent from Application context and will send the user to problem page
         // once user clicks on it
         Intent intent = new Intent (CurrentActivity, problem);
@@ -98,7 +131,8 @@ public class NotificationGenerator extends AppCompatActivity{
 
 
 
-        Util.retrieveSavedRanges(context);
+        /*Object Creation and data retrieval*/
+        Util.retrieveSavedData(context);
         t = Util.getTemperature();
         h= Util.getHumidity();
         l=Util.getLight();

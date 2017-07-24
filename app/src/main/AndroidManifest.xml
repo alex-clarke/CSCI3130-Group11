@@ -26,6 +26,7 @@
             /></activity>
 
         <receiver android:name=".BroadcastAlarm" />
+        <receiver android:name=".BroadcastUpdate" />
 
         <activity
             android:name=".Chat"

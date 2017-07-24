@@ -30,16 +30,6 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
     Temperature t ;
 
     /*
-     Firebase objects
-     */
-    private DatabaseReference firebaseReference;
-    private FirebaseDatabase firebaseDBInstance;
-    /*
-     Scanner for parsing strings from firebase
-     */
-    Scanner scr;
-
-    /*
     Textviews for data display
      */
     TextView tCurrent;
@@ -57,20 +47,29 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
      */
     Button setRangesButton;
 
-    /**
-     * Constructor to create Objects for background process
-     */
+    /*Firebase Connectivity*/
+    private static DatabaseReference firebaseReference;
+    private static FirebaseDatabase firebaseDBInstance;
 
+    /*Scanner for parsing database*/
+    private static Scanner scr;
+
+    /*SharedPreferences to retrieve saved app data*/
+    SharedPreferences prefs;
+
+
+    /*Flag for multithreading (Listerner method from firebase run on a different thread which is not started from the app
+    but from the firebase, hence everytime the data changes it will update,
+    since our data is stored on objects we need to integrate data retrieval
+     and app saved ranges for proper data displayed, as well as, integration with our toast notification
+     without it being fired everytime data is updated
+     even when the activity is not active).
+     */
+    private static boolean flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_current_data);
-
-        /*
-        Firebase connectivity
-         */
-        firebaseDBInstance = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDBInstance.getReference();
 
         /*
         Objects 
@@ -78,7 +77,6 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         l=Util.getLight();
         h=Util.getHumidity();
         t=Util.getTemperature();
-
 
         /*
         TextViews get assigned
@@ -97,20 +95,25 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
          */
         setRangesButton = (Button) findViewById(R.id.change_range_button);
         setRangesButton.setOnClickListener(this);
-        /*
-        Sets the saved ranges
+
+        /*FireBase Connectivity*/
+        firebaseDBInstance = FirebaseDatabase.getInstance();
+        firebaseReference = firebaseDBInstance.getReference();
+
+        flag = true;
+
+        /**
+         * On change method for fatabase. This allows real time data retrieval as soon as data is changed.
+         * Hence, user will always see the updated data.
          */
-        Util.retrieveSavedRanges(getApplicationContext());
-
-
-        /*
-        Data gets displayed
-         */
-
-        // Read from the database
         firebaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                /*Allows retrieval from sharedPreferences as well as saves current data*/
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor savedData = preferences.edit();
+                /*Retrieves save ranges and data*/
+                Util.retrieveSavedData(getApplicationContext());
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
@@ -122,24 +125,28 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
                 double tempCurrent = scr.nextDouble();
                 //Set current value of the object to be the value from firebase
                 t.setCurrent(tempCurrent);
+                savedData.putString("TEMPERATURE_CURRENT", Double.toString(tempCurrent)).commit();
 
                 String humStr = dataSnapshot.child("current").child("hum").getValue(String.class);
                 scr = new Scanner(humStr);
                 scr.useDelimiter("[^\\p{Alnum},\\.-]");
                 double humCurrent = scr.nextDouble();
                 h.setCurrent(humCurrent);
+                savedData.putString("HUMIDITY_CURRENT", Double.toString(humCurrent)).commit();
 
                 String lightStr = dataSnapshot.child("current").child("light").getValue(String.class);
                 scr = new Scanner(lightStr);
                 scr.useDelimiter("[^\\p{Alnum},\\.-]");
                 double lightCurrent = scr.nextDouble();
                 l.setCurrent(lightCurrent);
-
-                TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
-                warningTextView.setText("");
+                savedData.putString("LIGHT_CURRENT", Double.toString(lightCurrent)).commit();
+                /*
+                Displays the data and activates notifications if user requested them for warning.
+                */
                 displayData(tCurrent, tLow, tHigh, t);
                 displayData(hCurrent, hLow, hHigh, h);
                 displayData(lCurrent, lLow, lHigh, l);
+
             }
 
             @Override
@@ -148,15 +155,18 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
                 //TODO Some kind of message display here
             }
         });
+
+
     }
 
     /**
      * Displays the data and verifies that data is within the requested parameters.
      * If not error message is displayed.
+     * Notification generator was integrated here since this method checks for out of ranges
+     * data.
      */
     public void displayData(TextView current, TextView low, TextView high, Measurement data){
 
-        TextView warningTextView = (TextView) findViewById(R.id.WarningTextView);
 
         if(data.checkMeasurement(data.getCurrent())){
             current.setTextColor(Color.GREEN);
@@ -165,13 +175,27 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
             setData(current, low, high, data);
         }
         else{
+            /*Allows retrieval from sharedPreferences*/
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            /*Notification generator running in the background*/
+            if(prefs.getBoolean("WARNING_MSG", false)) {
+                /**
+                 * See notes in broadcastUpdate class for proper explanation.
+                 * Generates notification only when data is out of range.
+                 */
+                prefs.edit().putBoolean("WARNING_MSG", false).commit();
+                /**
+                 * Generates notification.
+                 */
+                NotificationGenerator.NotificationMessage("GREENHOUSE UPDATE",
+                        NotificationGenerator.UpdateInformation(getApplicationContext()), getApplicationContext(), DisplayCurrentData.class);
+            }
+
             current.setTextColor(Color.RED);
             low.setTextColor(Color.RED);
             high.setTextColor(Color.RED);
             setData(current, low, high, data);
-            warningTextView.setText("WARNING: Something is out of range!");
-            warningTextView.setTextColor(Color.RED);
-
+            toastWarning();
         }
     }
 
@@ -184,16 +208,18 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         high.setText(data.getUserInputedRangeUpper()+ "");
     }
 
-
     /**
-     * Toast for error
+     * Toast for error. Only will activate if user is in the activity.
      */
     public void toastWarning(){
-        Context context = getApplicationContext();
-        CharSequence text = "WARNING: SOMETHING IS OUT OF RANGE";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        if(flag==true) {
+            flag=false;
+            Context context = getApplicationContext();
+            CharSequence text = "WARNING: SOMETHING IS OUT OF RANGE";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     /**
@@ -215,7 +241,6 @@ public class DisplayCurrentData extends AppCompatActivity implements View.OnClic
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
     }
-
 
 
 }

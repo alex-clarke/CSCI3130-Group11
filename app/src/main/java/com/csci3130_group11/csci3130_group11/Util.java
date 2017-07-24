@@ -11,8 +11,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.Serializable;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 public class Util extends AppCompatActivity {
 
@@ -22,6 +28,14 @@ public class Util extends AppCompatActivity {
     private static Light l; //Light
     private static Temperature t; // temperature
     private static Humidity h; //humidity
+    /*Firebase Connectivity*/
+    private static DatabaseReference firebaseReference;
+    private static FirebaseDatabase firebaseDBInstance;
+    /*Scanner for parsing database*/
+    private static Scanner scr;
+    /*shared preferences variables*/
+    private static SharedPreferences.Editor savedData;
+    private static SharedPreferences preferences;
 
     public static double increase(double d) {
         BigDecimal b1 = new BigDecimal(Double.toString(d));
@@ -42,10 +56,14 @@ public class Util extends AppCompatActivity {
      */
     public static void createDataObjects(){
 
+        /*makes sure no object is duplicated*/
+        l=null;
+        t=null;
+        h=null;
+        /*creates objects*/
         l = new Light();
         t = new Temperature();
         h = new Humidity();
-
     }
 
     //Getters and Setters - AClarke
@@ -97,12 +115,11 @@ public class Util extends AppCompatActivity {
         t = temperature;
     }
 
-
     /**
-     * Retrieves stored information
+     * Retrieves stored information for ranges and last retrieved data
+     * @param context (Context of the activity where data will be displayed)
      */
-    public static Context retrieveSavedRanges(Context context){
-
+    public static Context retrieveSavedData(Context context){
 
         /*
         Creates objects if they are null... Only during background process.
@@ -119,6 +136,9 @@ public class Util extends AppCompatActivity {
         String huHigh = savedData.getString("HUMIDITY_HIGH", Double.toString(h.getUserInputedRangeUpper()));
         String liLow  = savedData.getString("LIGHT_LOW", Double.toString(l.getUserInputedRangeLower()));
         String liHigh =  savedData.getString("LIGHT_HIGH", Double.toString(l.getUserInputedRangeUpper()));
+        String cTem = savedData.getString("TEMPERATURE_CURRENT", Double.toString(t.getCurrent()));
+        String cLight = savedData.getString("LIGHT_CURRENT", Double.toString(l.getCurrent()));
+        String cHum = savedData.getString("HUMIDITY_CURRENT", Double.toString(h.getCurrent()));
 
         // Parsing from String to Double
         double hMax = Double.parseDouble(huHigh);
@@ -127,6 +147,9 @@ public class Util extends AppCompatActivity {
         double tMin = Double.parseDouble(teLow );
         double lMax = Double.parseDouble(liHigh);
         double lMin = Double.parseDouble(liLow );
+        double cT = Double.parseDouble(cTem);
+        double cL = Double.parseDouble(cLight);
+        double cH = Double.parseDouble(cHum);
 
         h.setUserInputedRangeLower(hMin);
         l.setUserInputedRangeLower(lMin);
@@ -134,6 +157,9 @@ public class Util extends AppCompatActivity {
         h.setUserInputedRangeUpper(hMax);
         l.setUserInputedRangeUpper(lMax);
         t.setUserInputedRangeUpper(tMax);
+        h.setCurrent(cH);
+        l.setCurrent(cH);
+        t.setCurrent(cT);
 
         return context;
 
