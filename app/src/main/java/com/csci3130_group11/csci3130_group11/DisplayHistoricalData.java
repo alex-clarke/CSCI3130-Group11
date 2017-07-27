@@ -88,9 +88,9 @@ public class DisplayHistoricalData extends AppCompatActivity implements View.OnC
                 //Get the data, as a string, from firebase~
                 for (int i = 0; i < 365; i++) {
                     try {
-                        String tempStr = dataSnapshot.child("history").child(Integer.toString(i)).child("11").child("54").child("45").child("temp").getValue(String.class);
-                        String humStr = dataSnapshot.child("history").child(Integer.toString(i)).child("11").child("54").child("45").child("hum").getValue(String.class);
-                        String lightStr = dataSnapshot.child("history").child(Integer.toString(i)).child("11").child("54").child("45").child("light").getValue(String.class);
+                        String tempStr = dataSnapshot.child("history").child(Integer.toString(i)).child("9").child("58").child("0").child("temp").getValue(String.class);
+                        String humStr = dataSnapshot.child("history").child(Integer.toString(i)).child("9").child("58").child("0").child("hum").getValue(String.class);
+                        String lightStr = dataSnapshot.child("history").child(Integer.toString(i)).child("9").child("58").child("0").child("light").getValue(String.class);
 
                         //Scanner to parse the string to double
                         scr = new Scanner(tempStr);
